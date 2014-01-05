@@ -4,7 +4,7 @@ It is a micro JavaSscript library. This is developed to give anonymous scope to 
 with restored core JavaScript behaviour. This is aimed avoid collision among code snippets 
 or plugins and provide anonymous function scope with default behaviour of Javascript.
 
-# Example
+## Example
 	Object = null; //This overridden can not reflect inside to "SafeBox" scope
 	
 	SafeBox(function(){
@@ -14,10 +14,10 @@ or plugins and provide anonymous function scope with default behaviour of Javasc
 	})
 
 
-# License
+## License
 The MIT License (MIT)
 
-Copyright (c) 2014 hilarudeens<hilar.udeen@gmail.com>
+Copyright (c) 2014 hilarudeens&lt;hilar.udeen@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
