@@ -1,8 +1,9 @@
 SafeBox-Lite
 ============
-It is a micro JavaSscript library. This is developed to give anonymous scope to functions 
-with restored core JavaScript behaviour. This is aimed avoid collision among code snippets 
-or plugins and provide anonymous function scope with default behaviour of Javascript.
+It is a micro JavaScript library. This is developed to give anonymous scope to 
+functions with restored core JavaScript behaviour. This is aimed avoid collision 
+among code snippets or plugins and provide anonymous function scope with default 
+behaviour of Javascript.
 
 ## Example
 	Object = null; //This overridden can not reflect inside to "SafeBox" scope
