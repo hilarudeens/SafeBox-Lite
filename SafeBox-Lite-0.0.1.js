@@ -51,7 +51,7 @@
 	var Number = ((0).constructor);
 
 	//Restore "Boolean"
-	var Number = ((true).constructor);
+	var Boolean = ((true).constructor);
 
 	/**
 	 * Restore Composite Data Types
