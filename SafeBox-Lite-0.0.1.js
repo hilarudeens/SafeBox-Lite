@@ -84,40 +84,29 @@
 	//Restore "RegExp"
 	var RegExp = ((/(?:)/).constructor);
 
-	//SafeBox
-	var _validateEval = function() {
-		isEvalExist = false;
-		try {
-			if (eval && typeof (eval) === "function" && eval.toString() === "function eval() { [native code] }") {
-				isEvalExist = true;
-			}
-		} catch(e) {
-		}
-		return isEvalExist;
+	/**
+	 * Function to generate scope with default javascript behaviour.
+	 * 
+     * @param {Function} fn
+     * @return {Function} 
+     */
+	var _compile = function(fn){
+		var compilerArguments = ['Function', 'String', 'Number', 'Boolean', 'Object', 'Array', 'RegExp','undefined'];
+		var functionString = fn.toString();
+		var anonymousCore = "return "+functionString;
+		compilerArguments.push(anonymousCore);
+		var compiledFunction = Function.apply({}, compilerArguments).apply({},[
+			Function,
+			String,
+			Number,
+			Boolean,
+			Object,
+			Array,
+			RegExp
+		]);
+		return compiledFunction;
 	};
-
-	//Create a scope for evaluate function
-	var _compile = function(fn) {
-		try {
-			var func;
-			if (_validateEval()) {
-				func = eval("(" + fn.toString() + ")");
-			} else {
-				func = fn;
-			}
-
-		} catch(e) {
-			func = fn;
-		}
-		return (function() {
-			try {
-				func();
-			} catch(e) {
-				console && console.log ? (console.log(e.message)) : null;
-			}
-		});
-	};
-
+	
 	var SafeBox = function(fn) {
 		return _compile(fn);
 	};

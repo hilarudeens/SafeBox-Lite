@@ -10,9 +10,10 @@ behaviour of Javascript.
 	
 	SafeBox(function(){
 		//Here you can use "Object" constructor to create new object
-		var newObject = Object.create();
+		var newObject = Object.create({foo:"bar"});
 		//Note: In this anonymous scope default Javascript "Object" is restored.
-	})
+		console.log(newObject);
+	})();
 
 
 ## License
