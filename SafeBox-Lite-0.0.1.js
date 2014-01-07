@@ -1,10 +1,11 @@
 /**
  * NAME: SafeBox
  *
- * DESCRIPTION: It is a micro JavaSscript library. This is developed to give anonymous
- * 				scope to functions with restored core JavaScript behaviour. This is aimed
- * 				avoid collision among code snippets or plugins with default behaviour
- * 				of Javascript.
+ * DESCRIPTION:
+ * 		It is a micro JavaSscript library. This is developed to give anonymous
+ * 		scope to functions with restored core JavaScript behaviour. This is aimed
+ * 		avoid collision among code snippets or plugins with default behaviour
+ * 		of Javascript.
  *
  * VERSION: 0.0.1
  *
@@ -86,27 +87,19 @@
 
 	/**
 	 * Function to generate scope with default javascript behaviour.
-	 * 
-     * @param {Function} fn
-     * @return {Function} 
-     */
-	var _compile = function(fn){
-		var compilerArguments = ['Function', 'String', 'Number', 'Boolean', 'Object', 'Array', 'RegExp','undefined'];
+	 *
+	 * @param {Function} fn
+	 * @return {Function}
+	 */
+	var _compile = function(fn) {
+		var compilerArguments = ['Function', 'String', 'Number', 'Boolean', 'Object', 'Array', 'RegExp', 'undefined'];
 		var functionString = fn.toString();
-		var anonymousCore = "return "+functionString;
+		var anonymousCore = "return " + functionString;
 		compilerArguments.push(anonymousCore);
-		var compiledFunction = Function.apply({}, compilerArguments).apply({},[
-			Function,
-			String,
-			Number,
-			Boolean,
-			Object,
-			Array,
-			RegExp
-		]);
+		var compiledFunction = Function.apply({}, compilerArguments).apply({}, [Function, String, Number, Boolean, Object, Array, RegExp]);
 		return compiledFunction;
 	};
-	
+
 	var SafeBox = function(fn) {
 		return _compile(fn);
 	};
