@@ -2,12 +2,12 @@
  * NAME: SafeBox
  *
  * DESCRIPTION:
- * 		It is a micro JavaSscript library. This is developed to give anonymous
- * 		scope to functions with restored core JavaScript behaviour. This is aimed
- * 		avoid collision among code snippets or plugins with default behaviour
- * 		of Javascript.
+ *  It is a micro JavaSscript library. This is developed to give anonymous
+ *  scope to functions with restored core JavaScript behaviour. This is aimed
+ *  avoid collision among code snippets or plugins with default behaviour of
+ *  Javascript.
  *
- * VERSION: 0.0.1
+ * VERSION: 0.0.2
  *
  * AUTHOR: hilar.udeen@gmail.com
  *
@@ -39,38 +39,39 @@
  *
  */
 
-(function(window) {
+;(function(window) {
+	"use strict";
 	/**
 	 * Restore Primary Data Types
 	 * String, Number, Boolean
 	 */
 
-	//Restore "String"
+	// Restore "String"
 	var String = (("").constructor);
 
-	//Restore "Number"
+	// Restore "Number"
 	var Number = ((0).constructor);
 
-	//Restore "Boolean"
+	// Restore "Boolean"
 	var Boolean = ((true).constructor);
 
 	/**
 	 * Restore Composite Data Types
 	 * Object, Array
 	 */
-	//Restore "Object"
+	// Restore "Object"
 	var Object = (( {}).constructor);
 
-	//Restore "Array"
+	// Restore "Array"
 	var Array = (([]).constructor);
 
 	/**
 	 * Restore Special Data Types
 	 * null, undefined
 	 */
-	null;//null is non-writable datatype
+	null;// null is non-writable datatype
 
-	//Restore "undefined"
+	// Restore "undefined"
 	var undefined = (function(undefined) {
 		return undefined;
 	})();
@@ -78,12 +79,15 @@
 	/**
 	 * Restore Hidden Data Types
 	 */
-	//Restore "Function"
+	// Restore "Function"
 	var Function = ((function() {
 	}).constructor);
 
-	//Restore "RegExp"
+	// Restore "RegExp"
 	var RegExp = ((/(?:)/).constructor);
+
+	// Internal Cache
+	var _cache = {};
 
 	/**
 	 * Function to generate scope with default javascript behaviour.
@@ -92,18 +96,57 @@
 	 * @return {Function}
 	 */
 	var _compile = function(fn) {
+		var functionName = fn.name || fn;
+		var cachedFunction = _cache[functionName];
+
+		// Skip and Provide function which is already compiled.
+		if (!!cachedFunction) {
+			return cachedFunction;
+		}
+
+		// Anonymous function parameters
 		var compilerArguments = ['Function', 'String', 'Number', 'Boolean', 'Object', 'Array', 'RegExp', 'undefined'];
+
+		// Copy of contructors prototype
+		var fnPrototype = fn.prototype;
 		var functionString = fn.toString();
+
+		// Anonymous function definition
 		var anonymousCore = "return " + functionString;
+
+		// Anonymous function arguments
 		compilerArguments.push(anonymousCore);
+
+		// Generate restored anonymous function scope
 		var compiledFunction = Function.apply({}, compilerArguments).apply({}, [Function, String, Number, Boolean, Object, Array, RegExp]);
+
+		// Caching the function
+		if (!!functionName) {
+			_cache[functionName] = compiledFunction;
+		}
+
 		return compiledFunction;
 	};
 
-	var SafeBox = function(fn) {
-		return _compile(fn);
+	/**
+	 *	Function to validate SafeBox argument.
+	 * 	@param {*} fn.
+	 *  @return {Boolean}
+	 */
+	var _validate = function(fn) {
+		return ( typeof (fn) === 'function') || ( typeof (fn) === 'string' && !!_cache[fn]) ? true : false;
 	};
 
+	/**
+	 *	Function to provive core "SafeBox" context.
+	 * 	@param {*} fn
+	 *  @return {Function}
+	 */
+	var SafeBox = function(fn) {
+		return _validate(fn) ? _compile.call(this, fn) : fn;
+	};
+
+	// Create a global
 	window.SafeBox = SafeBox;
 
 })(window);
