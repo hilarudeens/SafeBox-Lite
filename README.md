@@ -16,7 +16,7 @@ among code snippets or plugins and provide isolated execution context.
 
 ## Creating class within SafeBox
 	var Person = SafeBox(function Person() {
-		function Person(name, age) { debugger
+		function Person(name, age) {
 			this.name = name;
 			this.age = age;
 		};
