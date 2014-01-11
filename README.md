@@ -1,11 +1,10 @@
 SafeBox-Lite
 ============
-It is a micro JavaScript library. This is developed to give anonymous scope to 
-functions with restored core JavaScript behaviour. This is aimed avoid collision 
-among code snippets or plugins and provide anonymous function scope with default 
-behaviour of Javascript.
+**SafeBox-Lite** is a JavaScript library. This is developed to give anonymous scope to 
+functions with restored core JavaScript behaviour. This helps avoid collision 
+among code snippets or plugins and provide isolated execution context.
 
-## Example
+## Basic usage example
 	Object = null; //This overridden can not reflect inside to "SafeBox" scope
 	
 	SafeBox(function(){
@@ -15,6 +14,27 @@ behaviour of Javascript.
 		console.log(newObject);
 	})();
 
+## Creating class within SafeBox
+	var Person = SafeBox(function Person() {
+		function Person(name, age) { debugger
+			this.name = name;
+			this.age = age;
+		};
+		Person.prototype.display = function() {
+			console.log("Person name is " + this.name);
+		};
+		return Person;
+	})();
+	
+## Restore class from SafeBox as a local variable
+	(function() {
+		// I am going to create "person" object and I assume that “Person” class
+		// already digested by SafeBox-Lite.
+		var Person = SafeBox("Person")();
+		// Creating "person" object
+		var person = new Person("foo",27);
+	})();
+	
 
 ## License
 The MIT License (MIT)

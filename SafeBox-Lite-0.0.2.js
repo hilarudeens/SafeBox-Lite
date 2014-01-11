@@ -1,17 +1,9 @@
 /**
- * NAME: SafeBox
- *
- * DESCRIPTION:
- *  It is a micro JavaSscript library. This is developed to give anonymous
- *  scope to functions with restored core JavaScript behaviour. This is aimed
- *  avoid collision among code snippets or plugins with default behaviour of
- *  Javascript.
+ * NAME: SafeBox-Lite
  *
  * VERSION: 0.0.2
  *
- * AUTHOR: hilar.udeen@gmail.com
- *
- * SITE: http://askhds.blogspot.in/
+ * AUTHOR: hilarudeens<hilar.udeen@gmail.com>
  *
  * ========================================
  * License
@@ -39,6 +31,44 @@
  *
  */
 
+/**
+ * SafeBox-Lite is a JavaScript library. This is developed to give anonymous scope to
+ * functions with restored core JavaScript behaviour. This helps avoid collision
+ * among code snippets or plugins and provide isolated execution context.
+ *
+ * ## Basic Usage Example
+ *
+ * Object = null; //This overridden can not reflect inside to "SafeBox" scope
+ * SafeBox(function(){
+ *	//Here you can use "Object" constructor to create new object
+ *  var newObject = Object.create({foo:"bar"});
+ *		//Note: In this anonymous scope default Javascript "Object" is restored.
+ *		console.log(newObject);
+ *	})();
+ *
+ * ## Creating class within SafeBox
+ *
+ * var Person = SafeBox(function Person() {
+ *		function Person(name, age) { debugger
+ *			this.name = name;
+ *			this.age = age;
+ *		};
+ *		Person.prototype.display = function() {
+ *			console.log("Person name is " + this.name);
+ *		};
+ *		return Person;
+ *	})();
+ *
+ * ## Restore Class from SafeBox as a local variable
+ *
+ *	(function() {
+ *		// I am going to create "person" object and I assume that “Person” class
+ *		// already digested by SafeBox-Lite.
+ *		var Person = SafeBox("Person")();
+ *		// Creating "person" object
+ *		var person = new Person("foo",27);
+ *	})();
+ */
 ;(function(window) {
 	"use strict";
 	/**
@@ -99,7 +129,7 @@
 		var functionName = fn.name || fn;
 		var cachedFunction = _cache[functionName];
 
-		// Skip and Provide function which is already compiled.
+		// Skip compile and Provide function which is already compiled.
 		if (!!cachedFunction) {
 			return cachedFunction;
 		}
