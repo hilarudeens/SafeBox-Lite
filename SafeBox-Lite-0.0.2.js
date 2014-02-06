@@ -69,56 +69,9 @@
  *		var person = new Person("foo",27);
  *	})();
  */
-;(function(window) {
-	"use strict";
-	/**
-	 * Restore Primary Data Types
-	 * String, Number, Boolean
-	 */
-
-	// Restore "String"
-	var String = (("").constructor);
-
-	// Restore "Number"
-	var Number = ((0).constructor);
-
-	// Restore "Boolean"
-	var Boolean = ((true).constructor);
-
-	/**
-	 * Restore Composite Data Types
-	 * Object, Array
-	 */
-	// Restore "Object"
-	var Object = (( {}).constructor);
-
-	// Restore "Array"
-	var Array = (([]).constructor);
-
-	/**
-	 * Restore Special Data Types
-	 * null, undefined
-	 */
-	null;// null is non-writable datatype
-
-	// Restore "undefined"
-	var undefined = (function(undefined) {
-		return undefined;
-	})();
-
-	/**
-	 * Restore Hidden Data Types
-	 */
-	// Restore "Function"
-	var Function = ((function() {
-	}).constructor);
-
-	// Restore "RegExp"
-	var RegExp = ((/(?:)/).constructor);
-
+;(function(window, undefined) {"use strict";
 	// Internal Cache
 	var _cache = {};
-
 	/**
 	 * Function to generate scope with default javascript behaviour.
 	 *
@@ -134,15 +87,56 @@
 			return cachedFunction;
 		}
 
+		/**
+		 * Restore Primary Data Types
+		 * String, Number, Boolean
+		 */
+
+		// Restore "String"
+		var String = (("").constructor);
+
+		// Restore "Number"
+		var Number = ((0).constructor);
+
+		// Restore "Boolean"
+		var Boolean = ((true).constructor);
+
+		/**
+		 * Restore Composite Data Types
+		 * Object, Array
+		 */
+		// Restore "Object"
+		var Object = (( {}).constructor);
+
+		// Restore "Array"
+		var Array = (([]).constructor);
+
+		/**
+		 * Restore Special Data Types
+		 * null, undefined
+		 */
+		// null; // Since null is non writable, there is no need to restore.
+
+		// Restore "undefined"
+		/*var undefined = (function(undefined) {
+			return undefined;
+		})();*/
+
+		/**
+		 * Restore Hidden Data Types
+		 */
+		// Restore "Function"
+		var Function = ((function() {
+		}).constructor);
+
+		// Restore "RegExp"
+		var RegExp = ((/(?:)/).constructor);
+
 		// Anonymous function parameters
 		var compilerArguments = ['Function', 'String', 'Number', 'Boolean', 'Object', 'Array', 'RegExp', 'undefined'];
-
-		// Copy of contructors prototype
-		var fnPrototype = fn.prototype;
-		var functionString = fn.toString();
-
+		
 		// Anonymous function definition
-		var anonymousCore = "return " + functionString;
+		var anonymousCore = "return " + fn.toString();
 
 		// Anonymous function arguments
 		compilerArguments.push(anonymousCore);
@@ -164,7 +158,7 @@
 	 *  @return {Boolean}
 	 */
 	var _validate = function(fn) {
-		return ( typeof (fn) === 'function') || ( typeof (fn) === 'string' && !!_cache[fn]) ? true : false;
+		return ( typeof fn === 'function') || ( typeof fn === 'string' && !!_cache[fn]) ? true : false;
 	};
 
 	/**
